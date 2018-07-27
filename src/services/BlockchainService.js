@@ -1,21 +1,14 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import "../configs/Services"
+import ApiService from "./ApiService";
 
-export default class BlockchainService extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        To be added
-      </View>
-    );
-  }
+export class BlockchainService{
+  constructor() {
+        this.apiService = new ApiService()
+    }
+
+    listBitcoinDetails = (address, callback) => {
+        this.apiService.get(ServiceEndpoints.listBitcoinDetails, address, callback)
+    }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#3a5aa3',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default BlockchainService

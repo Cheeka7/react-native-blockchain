@@ -1,35 +1,38 @@
 import React from 'react';
 import {View, Text, Button, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image} from 'react-native';
-import {SearchBar} from 'react-native-elements';
 import {validate} from "../utils/validation";
-// import {BlockchainService} from "../services/BlockchainService";
+import {BlockchainService} from "../services/BlockchainService";
 
 export default class SearchComponent extends React.Component {
     constructor(props) {
         super(props);
-        // this.blockchainService = new BlockchainService()
+        this.navigation = this.props.navigation;
+        this.blockchainService = new BlockchainService()
         this.state = {
           address: null,
           addressErrorMessage: '',
           addressError: false,
+          details: null
         }
     };
 
     render() {
         return (
-          <View>
-            <View style={{ justifyContent: 'center', alignItems: 'center', bottom: "40%"}}>
+          <View style={{backgroundColor: "#fff"}}>
+            <View style={{ justifyContent: 'center', alignItems: 'center'}}>
               <Image style={{
                               width: 150,
                               height: 150,
+                              top: 30
 
                           }}
                           resizeMode={Image.resizeMode.contain}
                           source={require('../assets/blockchain.png')}
               />
             </View>
-            <Text style={{textAlign: "center", height: 20, fontSize: 20, color: "#3a5aa3", fontWeight: "bold"}}> Please enter the bitcoin address </Text>
-              <View style={{height: "10%"}}/>
+            <View style={{marginTop: 100}}>
+              <Text style={{textAlign: "center", height: 20, fontSize: 20, color: "#3a5aa3", fontWeight: "bold"}}> Please enter the bitcoin address </Text>
+              <View style={{height: "20%"}}/>
               <TextInput
                   autoFocus={true}
                   autoCapitalize="none"
@@ -38,7 +41,7 @@ export default class SearchComponent extends React.Component {
                       height: 30,
                       borderColor: "#3a5aa3",
                       borderBottomWidth: 1,
-                      left: "3%",
+                      left: "10%",
                       width: 300
                   }}
                   onChangeText={(address) => {
@@ -51,7 +54,8 @@ export default class SearchComponent extends React.Component {
               <Text style={styles.errorText}>
                   {this.state.addressErrorMessage}
               </Text>
-
+            </View>
+            <View style={{alignItems: 'center', backgroundColor: "#fff"}} >
               <TouchableOpacity onPress={() => this.search()}
                                     style={{
                                         width: 170,
@@ -62,14 +66,13 @@ export default class SearchComponent extends React.Component {
                                         backgroundColor: "#fff",
                                         borderColor: "#3a5aa3",
                                         borderWidth: 2,
-                                        left: "20%"
               }}>
                 <Text style={{fontWeight: 'bold', color: "#3a5aa3"}}>
-                        Search
+                  Search
                 </Text>
               </TouchableOpacity>
-
             </View>
+          </View>
         );
     }
 
@@ -77,14 +80,24 @@ export default class SearchComponent extends React.Component {
     search = () => {
       let addressResponse = validate('address', this.state.address);
       if (addressResponse[0]) {
-            return true;
+            this.getDetails(this.state.address);
         } else {
             this.setState({
                 addressError: !addressResponse[0],
                 addressErrorMessage: addressResponse[1],
             })
-            return false;
         }
+    }
+
+    getDetails = (address) => {
+      this.blockchainService.listBitcoinDetails(address, this.listBitcoinDetailsCallback)
+    }
+
+    listBitcoinDetailsCallback = (response) => {
+        this.setState({
+            details: response
+        })
+        this.props.navigation.navigate('Bitcoin', {data: this.state.details})
     }
 
 }
@@ -96,7 +109,7 @@ const styles = StyleSheet.create({
     errorText: {
         height: 40,
         color: "red",
-        left: "5%",
+        left: "10%",
         width: "90%"
     },
 });
