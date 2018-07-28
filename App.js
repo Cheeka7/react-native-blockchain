@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import { View, StyleSheet, AppRegistry } from 'react-native';
-import {StackNavigator} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation';
 import BitcoinComponent from "./src/components/BitcoinComponent";
 import SearchComponent from "./src/components/SearchComponent";
+import TransactionListComponent from "./src/components/TransactionListComponent";
+import InputTransactionComponent from "./src/components/InputTransactionComponent";
+import OutputTransactionComponent from "./src/components/OutputTransactionComponent";
 
 export default class App extends React.Component {
   render() {
@@ -19,10 +22,13 @@ export var GlobalStore = {
     token: ''
 }
 
-const RootStack = StackNavigator(
+const RootStack = createStackNavigator(
   {
     Search: { screen: SearchComponent },
-    Bitcoin: { screen: BitcoinComponent }
+    Bitcoin: { screen: BitcoinComponent },
+    TransactionList: { screen: TransactionListComponent},
+    InputTransaction: { screen: InputTransactionComponent},
+    OutputTransaction: { screen: OutputTransactionComponent}
   },
   {
     initialRouteName: 'Search',
@@ -32,7 +38,7 @@ const RootStack = StackNavigator(
 const styles = StyleSheet.create({
   container: {
     height: "100%",
-    flex: 0.5,
+    flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center'
   },
