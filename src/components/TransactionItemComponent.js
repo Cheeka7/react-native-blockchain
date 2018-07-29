@@ -1,24 +1,29 @@
 import React from 'react';
 import {View, Text, Button, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView} from 'react-native';
 import {BlockchainService} from "../services/BlockchainService";
+import { StackActions, NavigationActions } from 'react-navigation';
+import {EventSystem} from "../../App";
 
-export default class OutputTransactionComponent extends React.Component {
+export default class TransactionItemComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.output = this.props.navigation.state.params.output;
-        this.address = this.props.navigation.state.params.address;
+        this.item = this.props.item;
+        this.address = this.props.address;
         this.state = {
           details: null
         }
         this.blockchainService = new BlockchainService()
-
     };
 
     render() {
       return (
-        <View style={{flex: 5}}>
-          <FlatList data={this.output}
-                    renderItem={({item}) => this.renderItem(item)}/>
+        <View style={{
+              height: "100%",
+              width: "100%",
+              flexDirection: "column",
+          }}>
+          <FlatList data={this.item}
+                    renderItem={({item}) =>this.renderItem(item)}/>
         </View>
       )
     }
@@ -41,8 +46,9 @@ export default class OutputTransactionComponent extends React.Component {
         this.setState({
             details: response
         })
-        this.props.navigation.navigate('Bitcoin', {data: this.state.details})
+        this.props.navigation.push('Bitcoin', {data: this.state.details})
     }
+
 
 
 }

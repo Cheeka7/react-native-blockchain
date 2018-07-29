@@ -18,32 +18,21 @@ export default class SearchComponent extends React.Component {
 
     render() {
         return (
-          <View style={{backgroundColor: "#fff"}}>
-            <View style={{ justifyContent: 'center', alignItems: 'center'}}>
-              <Image style={{
-                              width: 150,
-                              height: 150,
-                              top: 30
-
-                          }}
+          <View style={styles.container}>
+            <View style={styles.center}>
+              <Image style={styles.imageContainer}
                           resizeMode={Image.resizeMode.contain}
                           source={require('../assets/blockchain.png')}
               />
             </View>
-            <View style={{marginTop: 100}}>
-              <Text style={{textAlign: "center", height: 20, fontSize: 20, color: "#3a5aa3", fontWeight: "bold"}}> Please enter the bitcoin address </Text>
-              <View style={{height: "20%"}}/>
+            <View style={styles.searchContainer}>
+              <Text style={styles.labelText}> Please enter the bitcoin address </Text>
+              <View style={styles.searchInputContainer}/>
               <TextInput
                   autoFocus={true}
                   autoCapitalize="none"
                   autoCorrect={false}
-                  style={{
-                      height: 30,
-                      borderColor: "#3a5aa3",
-                      borderBottomWidth: 1,
-                      left: "10%",
-                      width: 300
-                  }}
+                  style={styles.searchInput}
                   onChangeText={(address) => {
                         let v = validate('address', address);
                         this.setState({address: address, addressError: !v[0], addressErrorMessage: v[1]})
@@ -55,19 +44,9 @@ export default class SearchComponent extends React.Component {
                   {this.state.addressErrorMessage}
               </Text>
             </View>
-            <View style={{alignItems: 'center', backgroundColor: "#fff"}} >
-              <TouchableOpacity onPress={() => this.search()}
-                                    style={{
-                                        width: 170,
-                                        height: 35,
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        borderRadius: 10,
-                                        backgroundColor: "#fff",
-                                        borderColor: "#3a5aa3",
-                                        borderWidth: 2,
-              }}>
-                <Text style={{fontWeight: 'bold', color: "#3a5aa3"}}>
+            <View style={styles.searchButtonContainer}>
+              <TouchableOpacity onPress={() => this.search()} style={styles.searchButton}>
+                <Text style={styles.searchText}>
                   Search
                 </Text>
               </TouchableOpacity>
@@ -76,7 +55,7 @@ export default class SearchComponent extends React.Component {
         );
     }
 
-    //first checks whether the bitcoin address is valid
+    //to check whether the bitcoin address is valid
     search = () => {
       let addressResponse = validate('address', this.state.address);
       if (addressResponse[0]) {
@@ -103,13 +82,38 @@ export default class SearchComponent extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    gap: {
-        height: 10
+    container: {
+      height: "100%", flex: 1, backgroundColor: '#fff',
+    },
+    center: {
+      alignItems: 'center', justifyContent: 'center'
+    },
+    imageContainer: {
+      width: 150, height: 150
+    },
+    searchContainer: {
+      marginTop: 50
+    },
+    labelText: {
+      textAlign: "center", height: 20, fontSize: 20, color: "#3a5aa3", fontWeight: "bold"
+    },
+    searchInputContainer : {
+      height: "10%"
+    },
+    searchInput: {
+        height: 30, borderColor: "#3a5aa3", borderBottomWidth: 1, left: "10%", width: 300
     },
     errorText: {
-        height: 40,
-        color: "red",
-        left: "10%",
-        width: "90%"
+        height: 40, color: "#f00", left: "10%", width: "90%"
     },
+    searchButtonContainer: {
+      alignItems: 'center'
+    },
+    searchButton: {
+        width: 170, height: 35, justifyContent: 'center', alignItems: 'center', borderRadius: 10, backgroundColor: "#fff",
+        borderColor: "#3a5aa3", borderWidth: 2,
+    },
+    searchText: {
+      fontWeight: 'bold', color: "#3a5aa3"
+    }
 });
