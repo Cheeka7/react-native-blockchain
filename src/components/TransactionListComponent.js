@@ -6,45 +6,68 @@ export default class TransactionListComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          address: this.props.navigation.state.params.address,
+          details: this.props.navigation.state.params.details,
           inputList: this.props.navigation.state.params.input,
-          outputList: this.props.navigation.state.params.output
+          outputList: this.props.navigation.state.params.output,
+          address: this.props.navigation.state.params.details.address,
         }
         this.navigation = this.props.navigation;
     };
 
     render() {
       return (
-        <KeyboardAvoidingView style={{
-              height: "100%",
-              width: "100%",
-              flexDirection: "column",
-          }}>
-          <View style={{flex: 3}}>
-              {this.getInputTransaction()}
+        <KeyboardAvoidingView style={styles.viewContainer}>
+          <View>
+              {this.backHome()}
           </View>
-          <View style={{flex: 3}}>
-              {this.getOutputTransaction()}
+          <View>
+              {this.getTransaction()}
           </View>
        </KeyboardAvoidingView>
       )
     }
 
-    getInputTransaction = () => {
+    backHome = () => {
       return (
         <View>
-          <Text> Incoming Transaction </Text>
-          <TransactionItemComponent navigation={this.navigation} address={this.state.address} item={this.state.inputList}/>
+          <TouchableOpacity onPress={() => {this.props.navigation.navigate("Search")}}>
+            <View style={styles.homeContainer}>
+              <Image style={styles.homeIcon} source={require('../assets/home.png')}/>
+            </View>
+          </TouchableOpacity>
         </View>
       )
     }
 
-    getOutputTransaction = () => {
-      return (
-        <View>
-        <Text> Outgoing Transaction </Text>
-          <TransactionItemComponent navigation={this.navigation} address={this.state.address} item={this.state.outputList}/>
-        </View>
-      )
+    getTransaction = () => {
+      if (this.state.inputList.length)
+        return (
+          <View>
+            <Text style={styles.header}> Incoming Transaction </Text>
+            <TransactionItemComponent navigation={this.navigation} details={this.state.details} item={this.state.inputList}/>
+          </View>
+        )
+      else
+        return (
+          <View>
+          <Text style={styles.header}> Outgoing Transaction </Text>
+            <TransactionItemComponent navigation={this.navigation} details={this.state.details} item={this.state.outputList}/>
+          </View>
+        )
     }
 }
+
+const styles = StyleSheet.create({
+  viewContainer: {
+    height: "100%", width: "100%", backgroundColor: "#fff"
+  },
+  header: {
+    fontSize: 20, fontWeight: "bold", color: "#3a5aa3", marginTop: 10, marginLeft: 10,
+  },
+  homeContainer: {
+   justifyContent: 'flex-end', alignItems: 'flex-end', margin: 10
+  },
+  homeIcon: {
+    color: "#3a5aa3", height: 30, width: 30
+  },
+})

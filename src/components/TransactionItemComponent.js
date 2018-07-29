@@ -8,7 +8,8 @@ export default class TransactionItemComponent extends React.Component {
     constructor(props) {
         super(props);
         this.item = this.props.item;
-        this.address = this.props.address;
+        this.details = this.props.details,
+        this.address = this.props.details.address,
         this.state = {
           details: null
         }
@@ -17,24 +18,24 @@ export default class TransactionItemComponent extends React.Component {
 
     render() {
       return (
-        <View style={{
-              height: "100%",
-              width: "100%",
-              flexDirection: "column",
-          }}>
-          <FlatList data={this.item}
-                    renderItem={({item}) =>this.renderItem(item)}/>
+        <View style={styles.transactionContainer}>
+          <FlatList data={this.item} renderItem={({item}) =>this.renderItem(item)}/>
         </View>
       )
     }
 
     renderItem = (item) => {
       return (
-        <View>
-          <TouchableOpacity onPress={() => this.getBitcoin(item)}>
-            <Text>{item}</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => this.getBitcoin(item)}>
+          <View style={styles.transactionRowContainer}>
+            <View style= {styles.transactionItemContainer}>
+                <Text style={styles.hashText}>{item}</Text>
+            </View>
+            <View style={styles.moreContainer}>
+              <Image style={styles.moreIcon} source={require('../assets/chevron-right.png')}/>
+            </View>
+          </View>
+        </TouchableOpacity>
       )
     }
 
@@ -48,7 +49,35 @@ export default class TransactionItemComponent extends React.Component {
         })
         this.props.navigation.push('Bitcoin', {data: this.state.details})
     }
-
-
-
 }
+
+const styles = StyleSheet.create({
+  viewContainer: {
+    height: "100%", width: "100%", backgroundColor: "#fff"
+  },
+  header: {
+    fontSize: 20, fontWeight: "bold", color: "#3a5aa3", marginTop: 10, marginLeft: 10
+  },
+  transactionContainer: {
+     margin: 10, backgroundColor: "#fff"
+  },
+  transactionRowContainer: {
+    borderWidth: 1, backgroundColor: "#fff", borderColor: "#3a5aa3",  flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+  transactionItemContainer: {
+    flexDirection: 'column', width: "90%", marginLeft: 5
+  },
+  moreContainer: {
+   justifyContent: 'center', alignItems: 'center'
+  },
+  moreIcon: {
+    color: "#3a5aa3", height: 25, width: 25
+  },
+  gap: {
+      height: "5%"
+  },
+  hashText: {
+    padding: 5, fontSize: 12
+  }
+})

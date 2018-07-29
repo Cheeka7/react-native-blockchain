@@ -17,6 +17,9 @@ export default class BitcoinComponent extends React.Component {
     render() {
       return (
         <KeyboardAvoidingView style={styles.viewContainer}>
+          <View>
+              {this.backHome()}
+          </View>
           <Text style={styles.header}> Summary </Text>
           <View>
               {this.getSummary()}
@@ -29,6 +32,18 @@ export default class BitcoinComponent extends React.Component {
         </KeyboardAvoidingView>
 
       );
+    }
+
+    backHome = () => {
+      return (
+        <View>
+          <TouchableOpacity onPress={() => {this.props.navigation.navigate("Search")}}>
+            <View style={styles.homeContainer}>
+              <Image style={styles.homeIcon} source={require('../assets/home.png')}/>
+            </View>
+          </TouchableOpacity>
+        </View>
+      )
     }
 
     getSummary = () => {
@@ -64,16 +79,16 @@ export default class BitcoinComponent extends React.Component {
 
    renderItem = (item) => {
         return (
-          <View style={styles.transactionRowContainer}>
-            <View style= {styles.transactionItemContainer}>
-              <TouchableOpacity onPress={() => this.getTransaction(item)}>
-                <Text style={styles.hashText}> {item.hash} </Text>
-              </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.getTransaction(item)}>
+            <View style={styles.transactionRowContainer}>
+                <View style= {styles.transactionItemContainer}>
+                    <Text style={styles.hashText}> {item.hash} </Text>
+                </View>
+                <View style={styles.moreContainer}>
+                  <Image style={styles.moreIcon} source={require('../assets/chevron-right.png')}/>
+                </View>
             </View>
-            <View style={styles.moreContainer}>
-              <Image style={styles.moreIcon} source={require('../assets/chevron-right.png')}/>
-            </View>
-          </View>
+          </TouchableOpacity>
         )
     }
 
@@ -101,7 +116,7 @@ export default class BitcoinComponent extends React.Component {
             this.setState({outputList: outputList});
         }
       }
-      this.props.navigation.push('TransactionList', {address: this.state.details.address, input: this.state.inputList, output: this.state.outputList})
+      this.props.navigation.push('TransactionList', {details: this.state.details, input: this.state.inputList, output: this.state.outputList})
     }
 }
 
@@ -148,5 +163,11 @@ const styles = StyleSheet.create({
   },
   hashText: {
     padding: 5, fontSize: 12
-  }
+  },
+  homeContainer: {
+   justifyContent: 'flex-end', alignItems: 'flex-end', margin: 10
+  },
+  homeIcon: {
+    color: "#3a5aa3", height: 30, width: 30
+  },
 })
