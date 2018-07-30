@@ -2,7 +2,6 @@ import React from 'react';
 import {View, Text, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView,  ActivityIndicator, Modal} from 'react-native';
 import {BlockchainService} from "../services/BlockchainService";
 import {StackActions, NavigationActions} from 'react-navigation';
-import {EventSystem} from "../../App";
 
 export default class TransactionItemComponent extends React.Component {
     constructor(props) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, ScrollView, Button, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView} from 'react-native';
+import {View, Text, ScrollView, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView} from 'react-native';
 
 export default class BitcoinComponent extends React.Component {
     constructor(props) {

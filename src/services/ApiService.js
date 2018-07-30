@@ -3,10 +3,6 @@ import {GlobalStore} from "../../App";
 
 export class ApiService {
 
-    constructor() {
-
-    }
-
     get = (url, params, callback) => {
         url = url + params;
         fetch(url, {
