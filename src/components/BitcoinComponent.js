@@ -95,6 +95,9 @@ export default class BitcoinComponent extends React.Component {
     }
 
     getTransaction = (item) => {
+      let date = new Date(0); // The 0 there is the key, which sets the date to the epoch
+      date.setUTCSeconds(item.time);
+      let time = date.getMonth() + 1 + '/' + date.getDate() + '/' +  date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
       this.state.inputList = [];
       this.state.outputList = [];
       this.isIncomingTransaction = false;
@@ -105,7 +108,7 @@ export default class BitcoinComponent extends React.Component {
       for(var i=0; i< input.length; i++) {
         if(input[i].prev_out.addr != this.state.address) {
           //add this address to the incoming transaction list
-            inputList.push(input[i].prev_out.addr);
+            inputList.push({address: input[i].prev_out.addr, value: input[i].prev_out.value, time: time});
             this.setState({inputList: inputList});
             this.isIncomingTransaction = true;
         }
@@ -114,7 +117,7 @@ export default class BitcoinComponent extends React.Component {
       if(!this.isIncomingTransaction) {
         for(var i=0; i< output.length; i++) {
             //add this address to the outgoing transaction list
-            outputList.push(output[i].addr);
+            outputList.push({address: output[i].addr, value: output[i].value, time: time});
             this.setState({outputList: outputList});
         }
       }
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
     height: "100%", width: "100%", backgroundColor: "#fff"
   },
   header: {
-    fontSize: 20, fontWeight: "bold", color: "#3a5aa3", marginTop: 10, marginLeft: 10,
+    fontSize: 20, color: "#3a5aa3", marginTop: 10, marginLeft: 10,
   },
   summaryContainer: {
     borderWidth: 0.5, margin: 10, backgroundColor: "#fff", padding: 10, borderColor: "#3a5aa3"

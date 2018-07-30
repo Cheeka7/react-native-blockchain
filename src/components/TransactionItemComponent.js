@@ -37,10 +37,12 @@ export default class TransactionItemComponent extends React.Component {
     renderItem = (item) => {
       return (
         <View>
-          <TouchableOpacity onPress={() => this.getBitcoin(item)}>
+          <TouchableOpacity onPress={() => this.getBitcoin(item.address)}>
             <View style={styles.transactionRowContainer}>
               <View style= {styles.transactionItemContainer}>
-                  <Text style={styles.hashText}>{item}</Text>
+                  <Text style={styles.hashText}>{item.address}</Text>
+                  <Text style={styles.hashText}>{item.value/100000000} BTC</Text>
+                  <Text style={styles.hashText}>{item.time}</Text>
               </View>
               <View style={styles.moreContainer}>
                 <Image style={styles.moreIcon} source={require('../assets/chevron-right.png')}/>
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
     height: "100%", width: "100%", backgroundColor: "#fff"
   },
   header: {
-    fontSize: 20, fontWeight: "bold", color: "#3a5aa3", marginTop: 10, marginLeft: 10
+    fontSize: 20, color: "#3a5aa3", marginTop: 10, marginLeft: 10
   },
   transactionContainer: {
      margin: 10, backgroundColor: "#fff"

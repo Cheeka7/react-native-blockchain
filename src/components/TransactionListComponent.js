@@ -49,7 +49,7 @@ export default class TransactionListComponent extends React.Component {
       if (this.state.inputList.length)
         return (
           <View>
-            <Text style={styles.header}> Incoming Transaction </Text>
+            <Text style={styles.header}> Incoming Transaction(s) </Text>
             <TransactionItemComponent navigation={this.navigation} details={this.state.details}
                                       item={this.state.inputList}
             />
@@ -58,7 +58,7 @@ export default class TransactionListComponent extends React.Component {
       else
         return (
           <View>
-          <Text style={styles.header}> Outgoing Transaction </Text>
+          <Text style={styles.header}> Outgoing Transaction(s) </Text>
             <TransactionItemComponent navigation={this.navigation} details={this.state.details}
                                       item={this.state.outputList}/>
           </View>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     height: "100%", width: "100%", backgroundColor: "#fff"
   },
   header: {
-    fontSize: 20, fontWeight: "bold", color: "#3a5aa3", marginTop: 10, marginLeft: 10,
+    fontSize: 20, color: "#3a5aa3", marginTop: 10, marginLeft: 10,
   },
   homeContainer: {
    justifyContent: 'flex-end', alignItems: 'flex-end', margin: 10
@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
     height: 30, width: 30
   },
   addressText:{
-    fontSize: 14, fontWeight: "bold", marginLeft: 10, marginBottom: 20
+    fontSize: 14, fontWeight: "bold", marginLeft: 10, marginBottom: 20, marginTop: 3
   },
 })

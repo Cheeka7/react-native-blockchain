@@ -85,11 +85,19 @@ export default class SearchComponent extends React.Component {
     }
 
     listBitcoinDetailsCallback = (response) => {
+      if(!response.error) {
         this.setState({
             details: response,
             modalVisible: false
         })
         this.props.navigation.navigate('Bitcoin', {data: this.state.details})
+      } else {
+        this.setState({
+            modalVisible: false,
+            addressError: true,
+            addressErrorMessage: 'Empty bitcoin address',
+        })
+      }
     }
 
 }
