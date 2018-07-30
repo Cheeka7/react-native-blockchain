@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Button, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView} from 'react-native';
+import {View, Text, ScrollView, Button, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView} from 'react-native';
 
 export default class BitcoinComponent extends React.Component {
     constructor(props) {
@@ -11,24 +11,26 @@ export default class BitcoinComponent extends React.Component {
           outputList: []
         }
         this.isIncomingTransaction = false;
+        this.balance = this.state.details.final_balance / 100000000;
     };
 
 
     render() {
       return (
         <KeyboardAvoidingView style={styles.viewContainer}>
-          <View>
-              {this.backHome()}
-          </View>
-          <Text style={styles.header}> Summary </Text>
-          <View>
-              {this.getSummary()}
-          </View>
-          <View style={styles.gap}/>
-          <Text style={styles.header}> Transaction Hash </Text>
-          <View>
-              {this.getTransactionDetails()}
-          </View>
+          <ScrollView>
+            <View>
+                {this.backHome()}
+            </View>
+            <Text style={styles.header}> Summary </Text>
+            <View>
+                {this.getSummary()}
+            </View>
+            <Text style={styles.header}> Transaction Hash </Text>
+            <View>
+                {this.getTransactionDetails()}
+            </View>
+          </ScrollView>
         </KeyboardAvoidingView>
 
       );
@@ -51,15 +53,15 @@ export default class BitcoinComponent extends React.Component {
         <View style={styles.summaryContainer}>
           <View style={styles.summaryAddressContainer}>
             <Text style={styles.summaryText}> Address: </Text>
-            <Text style={styles.addressText}>{this.state.details.address}</Text>
+            <Text style={styles.addressText}>{this.state.address}</Text>
           </View>
           <View style={styles.summaryRowContainer}>
             <Text style={styles.summaryText}> No. of transactions: </Text>
-            <Text>{this.state.details.n_tx}</Text>
+            <Text style={styles.summaryTextResult}>{this.state.details.n_tx}</Text>
           </View>
           <View style={styles.summaryRowContainer}>
             <Text style={styles.summaryText}> Final balance: </Text>
-            <Text> {this.state.details.final_balance}</Text>
+            <Text style={styles.summaryTextResult}t> {this.balance} BTC</Text>
           </View>
           <View style={styles.summaryAddressContainer}>
             <Text style={styles.summaryText}>Hash: </Text>
@@ -75,7 +77,7 @@ export default class BitcoinComponent extends React.Component {
           <FlatList data={this.state.details.txs} renderItem={({item}) => this.renderItem(item)}/>
         </View>
       )
-   }
+    }
 
    renderItem = (item) => {
         return (
@@ -128,14 +130,14 @@ const styles = StyleSheet.create({
     fontSize: 20, fontWeight: "bold", color: "#3a5aa3", marginTop: 10, marginLeft: 10,
   },
   summaryContainer: {
-    borderWidth: 1, margin: 10, backgroundColor: "#fff", padding: 10, borderColor: "#3a5aa3"
+    borderWidth: 2, margin: 10, backgroundColor: "#fff", padding: 10, borderColor: "#3a5aa3"
   },
   transactionContainer: {
      margin: 10, backgroundColor: "#fff"
   },
   transactionRowContainer: {
-    borderWidth: 1, backgroundColor: "#fff", borderColor: "#3a5aa3",  flexDirection: 'row',
-    justifyContent: 'flex-start'
+    borderWidth: 2, backgroundColor: "#fff", borderColor: "#3a5aa3",  flexDirection: 'row',
+    justifyContent: 'flex-start', paddingBottom: 15, paddingTop: 5, paddingLeft: 5, paddingRight: 5
   },
   transactionItemContainer: {
     flexDirection: 'column', width: "90%", marginLeft: 5
@@ -144,10 +146,7 @@ const styles = StyleSheet.create({
    justifyContent: 'center', alignItems: 'center',
   },
   moreIcon: {
-    color: "#3a5aa3", height: 25, width: 25
-  },
-  gap: {
-      height: "5%"
+   height: 30, width: 25
   },
   summaryRowContainer: {
     flexDirection: "row", alignItems: "center", justifyContent: "center"
@@ -156,7 +155,7 @@ const styles = StyleSheet.create({
     padding: 10, alignItems: "center", justifyContent: "center"
   },
   summaryText: {
-    fontSize: 20, color: "#3a5aa3", marginLeft: 3
+    fontSize: 20, color: "#3a5aa3", marginLeft: 3, paddingBottom: 5,
   },
   addressText:{
     fontSize: 12, fontWeight: "bold"
@@ -168,6 +167,9 @@ const styles = StyleSheet.create({
    justifyContent: 'flex-end', alignItems: 'flex-end', margin: 10
   },
   homeIcon: {
-    color: "#3a5aa3", height: 30, width: 30
+    height: 30, width: 30
   },
+  summaryTextResult: {
+    fontWeight: "bold", alignItems: "center", justifyContent: "center"
+  }
 })

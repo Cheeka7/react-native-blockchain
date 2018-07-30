@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Button, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView} from 'react-native';
+import {View, Text, ScrollView, Button, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView} from 'react-native';
 import TransactionItemComponent from "./TransactionItemComponent";
 
 export default class TransactionListComponent extends React.Component {
@@ -9,7 +9,7 @@ export default class TransactionListComponent extends React.Component {
           details: this.props.navigation.state.params.details,
           inputList: this.props.navigation.state.params.input,
           outputList: this.props.navigation.state.params.output,
-          address: this.props.navigation.state.params.details.address,
+          address: this.props.navigation.state.params.details.address
         }
         this.navigation = this.props.navigation;
     };
@@ -17,12 +17,18 @@ export default class TransactionListComponent extends React.Component {
     render() {
       return (
         <KeyboardAvoidingView style={styles.viewContainer}>
-          <View>
-              {this.backHome()}
-          </View>
-          <View>
-              {this.getTransaction()}
-          </View>
+          <ScrollView>
+            <View>
+                {this.backHome()}
+            </View>
+            <View>
+              <Text style={styles.header}> Bitcoin Address: </Text>
+              <Text style={styles.addressText}> {this.state.address}</Text>
+            </View>
+            <View>
+                {this.getTransaction()}
+            </View>
+          </ScrollView>
        </KeyboardAvoidingView>
       )
     }
@@ -44,14 +50,17 @@ export default class TransactionListComponent extends React.Component {
         return (
           <View>
             <Text style={styles.header}> Incoming Transaction </Text>
-            <TransactionItemComponent navigation={this.navigation} details={this.state.details} item={this.state.inputList}/>
+            <TransactionItemComponent navigation={this.navigation} details={this.state.details}
+                                      item={this.state.inputList}
+            />
           </View>
         )
       else
         return (
           <View>
           <Text style={styles.header}> Outgoing Transaction </Text>
-            <TransactionItemComponent navigation={this.navigation} details={this.state.details} item={this.state.outputList}/>
+            <TransactionItemComponent navigation={this.navigation} details={this.state.details}
+                                      item={this.state.outputList}/>
           </View>
         )
     }
@@ -68,6 +77,9 @@ const styles = StyleSheet.create({
    justifyContent: 'flex-end', alignItems: 'flex-end', margin: 10
   },
   homeIcon: {
-    color: "#3a5aa3", height: 30, width: 30
+    height: 30, width: 30
+  },
+  addressText:{
+    fontSize: 14, fontWeight: "bold", marginLeft: 10, marginBottom: 20
   },
 })

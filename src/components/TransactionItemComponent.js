@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, Button, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView} from 'react-native';
 import {BlockchainService} from "../services/BlockchainService";
-import { StackActions, NavigationActions } from 'react-navigation';
+import {StackActions, NavigationActions} from 'react-navigation';
 import {EventSystem} from "../../App";
 
 export default class TransactionItemComponent extends React.Component {
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
      margin: 10, backgroundColor: "#fff"
   },
   transactionRowContainer: {
-    borderWidth: 1, backgroundColor: "#fff", borderColor: "#3a5aa3",  flexDirection: 'row',
-    justifyContent: 'flex-start'
+    borderWidth: 2, backgroundColor: "#fff", borderColor: "#3a5aa3",  flexDirection: 'row',
+    justifyContent: 'flex-start', paddingBottom: 15, paddingTop: 5, paddingLeft: 5, paddingRight: 5
   },
   transactionItemContainer: {
     flexDirection: 'column', width: "90%", marginLeft: 5
@@ -72,12 +72,12 @@ const styles = StyleSheet.create({
    justifyContent: 'center', alignItems: 'center'
   },
   moreIcon: {
-    color: "#3a5aa3", height: 25, width: 25
+   height: 30, width: 25
   },
   gap: {
       height: "5%"
   },
   hashText: {
-    padding: 5, fontSize: 12
+    padding: 5, fontSize: 13
   }
 })
