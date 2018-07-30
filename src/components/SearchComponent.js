@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Button, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, ActivityIndicator, Modal} from 'react-native';
 import {validate} from "../utils/validation";
 import {BlockchainService} from "../services/BlockchainService";
 
@@ -12,45 +12,54 @@ export default class SearchComponent extends React.Component {
           address: null,
           addressErrorMessage: '',
           addressError: false,
-          details: null
+          details: null,
+          modalVisible: false
         }
     };
 
     render() {
         return (
           <View style={styles.container}>
-            <View style={styles.center}>
-              <Image style={styles.imageContainer}
-                          resizeMode={Image.resizeMode.contain}
-                          source={require('../assets/blockchain.png')}
-              />
-            </View>
-            <View style={styles.searchContainer}>
-              <Text style={styles.labelText}> Please enter the bitcoin address </Text>
-              <View style={styles.searchInputContainer}/>
-              <TextInput
-                  autoFocus={true}
-                  autoCapitalize="none"
-                  autoCorrect={false}
-                  style={styles.searchInput}
-                  onChangeText={(address) => {
-                        let v = validate('address', address);
-                        this.setState({address: address, addressError: !v[0], addressErrorMessage: v[1]})
-                    }}
-                  placeholder="Your bitcoin address"
-                  value={this.state.address}
-              />
-              <Text style={styles.errorText}>
-                  {this.state.addressErrorMessage}
-              </Text>
-            </View>
-            <View style={styles.searchButtonContainer}>
-              <TouchableOpacity onPress={() => this.search()} style={styles.searchButton}>
-                <Text style={styles.searchText}>
-                  Search
+              <View style={styles.center}>
+                <Image style={styles.imageContainer}
+                            resizeMode={Image.resizeMode.contain}
+                            source={require('../assets/blockchain.png')}/>
+              </View>
+              <View style={styles.searchContainer}>
+                <Text style={styles.labelText}> Please enter the bitcoin address </Text>
+                <View style={styles.searchInputContainer}/>
+                <TextInput
+                    autoFocus={true}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    style={styles.searchInput}
+                    onChangeText={(address) => {
+                          let v = validate('address', address);
+                          this.setState({address: address, addressError: !v[0], addressErrorMessage: v[1]})
+                      }}
+                    placeholder="Your bitcoin address"
+                    value={this.state.address}
+                />
+                <Text style={styles.errorText}>
+                    {this.state.addressErrorMessage}
                 </Text>
-              </TouchableOpacity>
-            </View>
+              </View>
+              <View style={styles.searchButtonContainer}>
+                <TouchableOpacity onPress={() => this.search()} style={styles.searchButton}>
+                  <Text style={styles.searchText}>
+                    Search
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <Modal
+                  animationType="none"
+                  transparent={true}
+                  visible={this.state.modalVisible}>
+                  <View style={styles.modalContainer}>
+                      <View style={styles.loadingContainer}/>
+                      <ActivityIndicator size="large"/>
+                  </View>
+             </Modal>
           </View>
         );
     }
@@ -69,12 +78,16 @@ export default class SearchComponent extends React.Component {
     }
 
     getDetails = (address) => {
+      this.setState({
+          modalVisible: true
+      })
       this.blockchainService.listBitcoinDetails(address, this.listBitcoinDetailsCallback)
     }
 
     listBitcoinDetailsCallback = (response) => {
         this.setState({
-            details: response
+            details: response,
+            modalVisible: false
         })
         this.props.navigation.navigate('Bitcoin', {data: this.state.details})
     }
@@ -115,5 +128,11 @@ const styles = StyleSheet.create({
     },
     searchText: {
       fontWeight: 'bold', color: "#3a5aa3"
+    },
+    modalContainer: {
+      height: "100%", width: "100%", alignItems: "center", backgroundColor: 'rgba(0,0,0,0)'
+    },
+    loadingContainer: {
+      height: 250
     }
 });

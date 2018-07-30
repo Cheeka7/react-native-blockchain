@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Button, TextInput, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView} from 'react-native';
+import {View, Text, TouchableOpacity, Animated, Keyboard, StyleSheet, Image, FlatList, KeyboardAvoidingView,  ActivityIndicator, Modal} from 'react-native';
 import {BlockchainService} from "../services/BlockchainService";
 import {StackActions, NavigationActions} from 'react-navigation';
 import {EventSystem} from "../../App";
@@ -11,7 +11,8 @@ export default class TransactionItemComponent extends React.Component {
         this.details = this.props.details,
         this.address = this.props.details.address,
         this.state = {
-          details: null
+          details: null,
+          modalVisible: false
         }
         this.blockchainService = new BlockchainService()
     };
@@ -20,32 +21,47 @@ export default class TransactionItemComponent extends React.Component {
       return (
         <View style={styles.transactionContainer}>
           <FlatList data={this.item} renderItem={({item}) =>this.renderItem(item)}/>
+          <Modal
+            animationType="none"
+            transparent={true}
+            visible={this.state.modalVisible}>
+            <View style={styles.modalContainer}>
+                <View style={styles.loadingContainer}/>
+                <ActivityIndicator size="large"/>
+            </View>
+           </Modal>
         </View>
       )
     }
 
     renderItem = (item) => {
       return (
-        <TouchableOpacity onPress={() => this.getBitcoin(item)}>
-          <View style={styles.transactionRowContainer}>
-            <View style= {styles.transactionItemContainer}>
-                <Text style={styles.hashText}>{item}</Text>
+        <View>
+          <TouchableOpacity onPress={() => this.getBitcoin(item)}>
+            <View style={styles.transactionRowContainer}>
+              <View style= {styles.transactionItemContainer}>
+                  <Text style={styles.hashText}>{item}</Text>
+              </View>
+              <View style={styles.moreContainer}>
+                <Image style={styles.moreIcon} source={require('../assets/chevron-right.png')}/>
+              </View>
             </View>
-            <View style={styles.moreContainer}>
-              <Image style={styles.moreIcon} source={require('../assets/chevron-right.png')}/>
-            </View>
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
       )
     }
 
     getBitcoin = (address) => {
+      this.setState({
+          modalVisible: true
+      })
       this.blockchainService.listBitcoinDetails(address, this.listBitcoinDetailsCallback)
     }
 
     listBitcoinDetailsCallback = (response) => {
         this.setState({
-            details: response
+            details: response,
+            modalVisible: false
         })
         this.props.navigation.push('Bitcoin', {data: this.state.details})
     }
@@ -62,7 +78,7 @@ const styles = StyleSheet.create({
      margin: 10, backgroundColor: "#fff"
   },
   transactionRowContainer: {
-    borderWidth: 2, backgroundColor: "#fff", borderColor: "#3a5aa3",  flexDirection: 'row',
+    borderWidth: 0.5, backgroundColor: "#fff", borderColor: "#3a5aa3",  flexDirection: 'row',
     justifyContent: 'flex-start', paddingBottom: 15, paddingTop: 5, paddingLeft: 5, paddingRight: 5
   },
   transactionItemContainer: {
@@ -79,5 +95,11 @@ const styles = StyleSheet.create({
   },
   hashText: {
     padding: 5, fontSize: 13
+  },
+  modalContainer: {
+    height: "100%", width: "100%", alignItems: "center", backgroundColor: 'rgba(0,0,0,0)'
+  },
+  loadingContainer: {
+    height: 250
   }
 })

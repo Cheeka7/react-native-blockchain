@@ -130,13 +130,13 @@ const styles = StyleSheet.create({
     fontSize: 20, fontWeight: "bold", color: "#3a5aa3", marginTop: 10, marginLeft: 10,
   },
   summaryContainer: {
-    borderWidth: 2, margin: 10, backgroundColor: "#fff", padding: 10, borderColor: "#3a5aa3"
+    borderWidth: 0.5, margin: 10, backgroundColor: "#fff", padding: 10, borderColor: "#3a5aa3"
   },
   transactionContainer: {
      margin: 10, backgroundColor: "#fff"
   },
   transactionRowContainer: {
-    borderWidth: 2, backgroundColor: "#fff", borderColor: "#3a5aa3",  flexDirection: 'row',
+    borderWidth: 0.5, backgroundColor: "#fff", borderColor: "#3a5aa3",  flexDirection: 'row',
     justifyContent: 'flex-start', paddingBottom: 15, paddingTop: 5, paddingLeft: 5, paddingRight: 5
   },
   transactionItemContainer: {
