@@ -21,9 +21,7 @@ export default class SearchComponent extends React.Component {
         return (
           <View style={styles.container}>
               <View style={styles.center}>
-                <Image style={styles.imageContainer}
-                            resizeMode={Image.resizeMode.contain}
-                            source={require('../assets/blockchain.png')}/>
+                <Text style={styles.mainHeading}> Bitcoin Explorer </Text>
               </View>
               <View style={styles.searchContainer}>
                 <Text style={styles.labelText}> Please enter the bitcoin address </Text>
@@ -106,8 +104,11 @@ const styles = StyleSheet.create({
     container: {
       height: "100%", flex: 1, backgroundColor: '#fff',
     },
+    mainHeading: {
+      fontSize: 30, color: "#3a5aa3", fontWeight: "bold"
+    },
     center: {
-      alignItems: 'center', justifyContent: 'center'
+      alignItems: 'center', justifyContent: 'center', height: 150
     },
     imageContainer: {
       width: 150, height: 150
